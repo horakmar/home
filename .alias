@@ -22,6 +22,8 @@ alias kgp="kubectl get pods -o wide"
 alias ksgp="kubectl -n kube-system get pods -o wide"
 
 # Docker
+alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
+alias dockrmi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias drmall='docker rm -f $(docker ps -a -q)'
 dockertun () {
 	ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
@@ -44,6 +46,10 @@ alias vie="vim -R"
 alias grepcfg='grep -Ev "^(#|$)"'
 alias gvie="gvim -R"
 alias lo="libreoffice"
+alias pi10="ping -i 10"
+alias jeu="journalctl -eu"
+alias smount="sudo mount"
+alias sumount="sudo umount"
 
 # ls
 alias l='ls --color=tty -AqCF'
@@ -72,7 +78,3 @@ alias smbwho="ssh -F $HOME/.ssh/config_qshorakmar xshare smbwho"
 alias vpn="sudo vpn"
 alias vpn7="sudo vpn"
 alias wifiadr="sudo dhcpcd wlan0"
-
-# Mount
-alias smount="sudo mount"
-alias sumount="sudo umount"
