@@ -1,5 +1,5 @@
 [user]
 	email = horak.martin@gmail.com
-	name = Martin Horak
+	name = Martin Horák
 [credential]
 	helper = cache --timeout=3600
