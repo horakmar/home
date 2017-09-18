@@ -28,7 +28,7 @@ alias drmall='docker rm -f $(docker ps -a -q)'
 dockertun () {
 	ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
 	export DOCKER_HOST=tcp://localhost:2375
-	echo "Using docker server at tcp://$i:2375 via SSH tunnel."
+	echo "Using docker server at tcp://$1:2375 via SSH tunnel."
 }
 
 # Various useful aliases
