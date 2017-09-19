@@ -26,9 +26,9 @@ alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
 alias dockrmi='docker rmi $(docker images --filter "dangling=true" -q --no-trunc)'
 alias drmall='docker rm -f $(docker ps -a -q)'
 dockertun () {
-	ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
-	export DOCKER_HOST=tcp://localhost:2375
-	echo "Using docker server at tcp://$1:2375 via SSH tunnel."
+    ssh -fNL 2375:localhost:2375 -F $HOME/.ssh/config_qshorakmar $1
+    export DOCKER_HOST=tcp://localhost:2375
+    echo "Using docker server at tcp://$1:2375 via SSH tunnel."
 }
 
 # Various useful aliases
@@ -63,13 +63,13 @@ alias uscp="scp -F $HOME/.ssh/config_qshorakmar"
 
 # Proxy
 proxy (){
-	HTTP_PROXY=http://http-proxy.cezdata.corp:8080
-	HTTPS_PROXY=$HTTP_PROXY;
+    HTTP_PROXY=http://http-proxy.cezdata.corp:8080
+    HTTPS_PROXY=$HTTP_PROXY;
     NO_PROXY="docker1.cezdata.corp,git.cezdata.corp,ubauto.cezdata.corp"
-	http_proxy=$HTTP_PROXY;
-	https_proxy=$HTTP_PROXY
+    http_proxy=$HTTP_PROXY;
+    https_proxy=$HTTP_PROXY
     no_proxy=$NO_PROXY
-	export HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+    export HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
 }
 alias unproxy="unset HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy"
 
