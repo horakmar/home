@@ -80,3 +80,6 @@ alias smbwho="ssh -F $HOME/.ssh/config_qshorakmar xshare smbwho"
 alias vpn="sudo vpn"
 alias vpn7="sudo vpn"
 alias wifiadr="sudo dhcpcd wlan0"
+
+# PKI
+alias crt="openssl x509 -noout -text -in "
