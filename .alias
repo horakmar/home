@@ -47,9 +47,12 @@ alias grepcfg='grep -Ev "^(#|$)"'
 alias gvie="gvim -R"
 alias lo="libreoffice"
 alias pi10="ping -i 10"
-alias jeu="journalctl -eu"
 alias smount="sudo mount"
 alias sumount="sudo umount"
+
+# Systemd
+alias jeu='journalctl -eu'
+alias jfu='journalctl -fu'
 
 # ls
 alias l='ls --color=tty -AqCF'
