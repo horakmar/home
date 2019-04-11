@@ -15,11 +15,41 @@ kuba () {
 kexe () {
     kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
 }
+ksexe () {
+    kubectl exec -n kube-system -ti $@ /bin/bash || kubectl exec -n kube-system -ti $@ /bin/sh
+}
+ktb () {
+    TOOLBOX_POD=$(kubectl get pods --selector=app=toolbox --all-namespaces -o jsonpath='{.items[0].metadata.name}')
+    TOOLBOX_NS=$(kubectl get pods --selector=app=toolbox --all-namespaces -o jsonpath='{.items[0].metadata.namespace}')
+    kubectl exec -ti -n $TOOLBOX_NS $TOOLBOX_POD /bin/bash
+}
 
-alias kub="kubectl"
-alias kubs="kubectl -n kube-system"
-alias kgp="kubectl get pods -o wide"
-alias ksgp="kubectl -n kube-system get pods -o wide"
+kcn () {
+  if [ -z $1 ]; then
+    mapfile -t namespaces < <(kubectl get namespaces --no-headers -o custom-columns=":metadata.name")
+    i=0
+    for n in ${namespaces[@]}; do
+      echo "$i) $n"
+      (( i++ ))
+    done
+    echo -n "Choose namespace: "
+    read r
+    ns=${namespaces[$r]}
+    echo "Set namespace to: $ns"
+  else
+    ns=$1
+  fi
+  kubectl config set-context $(kubectl config current-context) --namespace $ns
+}
+
+kcc () {
+  if [ -z $1 ]; then
+    kubectl config get-contexts
+  else
+    kubectl config use-context $1
+  fi
+}
+
 
 # Docker
 alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
@@ -47,12 +77,9 @@ alias grepcfg='grep -Ev "^(#|$)"'
 alias gvie="gvim -R"
 alias lo="libreoffice"
 alias pi10="ping -i 10"
+alias jeu="journalctl -eu"
 alias smount="sudo mount"
 alias sumount="sudo umount"
-
-# Systemd
-alias jeu='journalctl -eu'
-alias jfu='journalctl -fu'
 
 # ls
 alias l='ls --color=tty -AqCF'
@@ -66,14 +93,19 @@ alias uscp="scp -F $HOME/.ssh/config_qshorakmar"
 
 # Proxy
 proxy (){
-    HTTP_PROXY=http://http-proxy.cezdata.corp:8080
+    if [ $(hostname) == 'padouch' ]; then
+        HTTP_PROXY=http://localhost:3128
+    else
+        HTTP_PROXY=http://http-proxy.cezdata.corp:8080
+    fi
     HTTPS_PROXY=$HTTP_PROXY;
-    NO_PROXY="docker1.cezdata.corp,git.cezdata.corp,ubauto.cezdata.corp"
+    NO_PROXY="10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.0/8,127.0.0.1,.corp,localhost"
     http_proxy=$HTTP_PROXY;
     https_proxy=$HTTP_PROXY
     no_proxy=$NO_PROXY
-    export HTTP_PROXY HTTPS_PROXY http_proxy https_proxy
+    export HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy
 }
+alias proxy?="env | grep -i proxy"
 alias unproxy="unset HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy"
 
 # Samba
@@ -85,4 +117,7 @@ alias vpn7="sudo vpn"
 alias wifiadr="sudo dhcpcd wlan0"
 
 # PKI
-alias crt="openssl x509 -noout -text -in "
+#alias crt="openssl x509 -noout -text -in "
+
+# Syntax highlight
+alias ccat="pygmentize -g"
