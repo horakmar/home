@@ -8,10 +8,6 @@ vncvia() {
 }
 
 # Kubernetes
-kuba () {
-    kubectl $@ --all-namespaces
-}
-
 kexe () {
     kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
 }
