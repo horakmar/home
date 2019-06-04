@@ -57,6 +57,12 @@ dockertun () {
     echo "Using docker server at tcp://$1:2375 via SSH tunnel."
 }
 
+# Salt
+alias sarp='salt-call saltutil.refresh_pillar'
+alias sapi='salt-call pillar.items'
+alias sato='salt-call state.show_top'
+alias saap='salt-call state.apply'
+
 # Various useful aliases
 alias psl="ps --width 300 axf | less -S"
 alias mocd="mount /mnt/cdrom"
