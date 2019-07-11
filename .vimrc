@@ -2,10 +2,10 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set background=dark
 
-execute pathogen#infect()
+"execute pathogen#infect()
 syntax on
 filetype plugin indent on
-colorscheme gruvbox
+"colorscheme gruvbox
 
 set laststatus=2
 set shiftwidth=2
