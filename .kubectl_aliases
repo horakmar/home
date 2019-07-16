@@ -1714,3 +1714,7 @@ alias kgpvcwojn='kubectl get persistentvolumeclaims --watch -o=json --namespace'
 alias ksgpvcwojn='kubectl --namespace=kube-system get persistentvolumeclaims --watch -o=json --namespace'
 alias kgpvwojn='kubectl get persistentvolume --watch -o=json --namespace'
 alias ksgpvwojn='kubectl --namespace=kube-system get persistentvolume --watch -o=json --namespace'
+
+kgsedata() {
+  kubectl get secret -o json $1 | jq '.data | map_values(@base64d)'
+}
