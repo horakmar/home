@@ -8,44 +8,11 @@ vncvia() {
 }
 
 # Kubernetes
-kexe () {
-    kubectl exec -ti $@ /bin/bash || kubectl exec -ti $@ /bin/sh
-}
-ksexe () {
-    kubectl exec -n kube-system -ti $@ /bin/bash || kubectl exec -n kube-system -ti $@ /bin/sh
-}
-ktb () {
-    TOOLBOX_POD=$(kubectl get pods --selector=app=toolbox --all-namespaces -o jsonpath='{.items[0].metadata.name}')
-    TOOLBOX_NS=$(kubectl get pods --selector=app=toolbox --all-namespaces -o jsonpath='{.items[0].metadata.namespace}')
-    kubectl exec -ti -n $TOOLBOX_NS $TOOLBOX_POD /bin/bash
+kuba () {
+    kubectl $@ --all-namespaces
 }
 
-kcn () {
-  if [ -z $1 ]; then
-    mapfile -t namespaces < <(kubectl get namespaces --no-headers -o custom-columns=":metadata.name")
-    i=0
-    for n in ${namespaces[@]}; do
-      echo "$i) $n"
-      (( i++ ))
-    done
-    echo -n "Choose namespace: "
-    read r
-    ns=${namespaces[$r]}
-    echo "Set namespace to: $ns"
-  else
-    ns=$1
-  fi
-  kubectl config set-context $(kubectl config current-context) --namespace $ns
-}
-
-kcc () {
-  if [ -z $1 ]; then
-    kubectl config get-contexts
-  else
-    kubectl config use-context $1
-  fi
-}
-
+# Rest is in .kubectl_aliases
 
 # Docker
 alias dockrm='docker rm $(docker ps -qa --no-trunc --filter "status=exited")'
@@ -107,7 +74,7 @@ proxy (){
     no_proxy=$NO_PROXY
     export HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy
 }
-alias proxy?="env | grep -i proxy"
+alias proxy?='env | grep -i proxy && echo -e "\nexport HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy"'
 alias unproxy="unset HTTP_PROXY HTTPS_PROXY NO_PROXY http_proxy https_proxy no_proxy"
 
 # Samba
